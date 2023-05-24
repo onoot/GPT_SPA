@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useQuery } from 'react-query';
 
 import { GetServerSideProps } from 'next';
@@ -55,7 +55,6 @@ const Home = ({
   const { t } = useTranslation('chat');
   const { getModels } = useApiService();
   const { getModelsError } = useErrorService();
-  const [initialRender, setInitialRender] = useState<boolean>(true);
 
   const contextValue = useCreateReducer<HomeInitialState>({
     initialState,
@@ -69,14 +68,13 @@ const Home = ({
       conversations,
       selectedConversation,
       prompts,
-      temperature,
     },
     dispatch,
   } = contextValue;
 
   const stopConversationRef = useRef<boolean>(false);
 
-  const { data, error, refetch } = useQuery(
+  const { data, error } = useQuery(
     ['GetModels', apiKey, serverSideApiKeyIsSet],
     ({ signal }) => {
       if (!apiKey && !serverSideApiKeyIsSet) return null;
@@ -231,7 +229,7 @@ const Home = ({
     if (window.innerWidth < 640) {
       dispatch({ field: 'showChatbar', value: false });
     }
-  }, [selectedConversation]);
+  },[dispatch, selectedConversation]);
 
   useEffect(() => {
     defaultModelId &&
@@ -246,7 +244,7 @@ const Home = ({
         field: 'serverSidePluginKeysSet',
         value: serverSidePluginKeysSet,
       });
-  }, [defaultModelId, serverSideApiKeyIsSet, serverSidePluginKeysSet]);
+  }, [defaultModelId, dispatch, serverSideApiKeyIsSet, serverSidePluginKeysSet]);
 
   // ON LOAD --------------------------------------------
 
@@ -340,12 +338,7 @@ const Home = ({
         },
       });
     }
-  }, [
-    defaultModelId,
-    dispatch,
-    serverSideApiKeyIsSet,
-    serverSidePluginKeysSet,
-  ]);
+  }, [conversations, defaultModelId, dispatch, serverSideApiKeyIsSet, serverSidePluginKeysSet, t]);
 
   return (
     <HomeContext.Provider

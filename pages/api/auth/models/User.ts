@@ -1,61 +1,71 @@
-import { Sequelize, DataTypes, Model, EnumDataType } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../lib/database';
 
-export class User extends Model {}
+interface UserAttributes {
+    id?: number;
+    name: string;
+    email: string;
+    password: string;
+    paymentOrderId?: string;
+    paymentStatus?: string;
+    paymentDate?: Date; // добавляем новое свойство paymentDate
+    createdAt?: Date;
+    updatedAt?: Date;
+}
+
+export class User extends Model<UserAttributes> implements UserAttributes {
+    public id!: number;
+    public name!: string;
+    public email!: string;
+    public password!: string;
+    public paymentOrderId!: string;
+    public paymentStatus!: string;
+    public paymentDate!: Date;
+
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
+}
 
 User.init(
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true,
-            unique: true,
         },
         name: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(255),
             allowNull: false,
         },
         email: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(255),
             allowNull: false,
             unique: true,
+            validate: {
+                isEmail: true,
+            },
         },
         password: {
-            type: DataTypes.STRING,
+            type: DataTypes.STRING(255),
             allowNull: false,
-        },
-        subscriptionRate: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0,
-        },
-        subscriptionExpiresAt: {
-            type: DataTypes.DATE,
-        },
-        paymentMethod: {
-            type: DataTypes.STRING,
-            defaultValue: 'FreeKassa', // использовать FreeKassa по умолчанию
-        },
-        paymentAmount: {
-            type: DataTypes.INTEGER,
-        },
-        paymentDate: {
-            type: DataTypes.DATE,
-        },
-        paymentExpiresAt: {
-            type: DataTypes.DATE,
         },
         paymentOrderId: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: false,
+            type: DataTypes.STRING(255),
+            allowNull: true,
         },
         paymentStatus: {
-            type: DataTypes.ENUM<'PENDING' | 'COMPLETED' | 'EXPIRED'>('PENDING', 'COMPLETED', 'EXPIRED'),
-            defaultValue: 'PENDING',
+            type: DataTypes.STRING(255),
+            allowNull: true,
+        },
+        paymentDate: { // добавляем новое свойство paymentDate
+            type: DataTypes.DATE,
+            allowNull: true,
         },
     },
     {
+        tableName: 'users',
         sequelize,
-        modelName: 'User',
     }
 );
+
+export default User;

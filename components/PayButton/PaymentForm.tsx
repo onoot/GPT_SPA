@@ -54,27 +54,13 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ show, setShow }) => {
     return (
         <div className={'overlay'} style={{ display: show ? 'block' : 'none' }}>
             <div className={'form'}>
-                <h2>Оплата</h2>
                 <div className="menu-container">
                     <div className="menu-panel">
-                        <div className="form-group">
-                            <label htmlFor="amount">Сумма оплаты (руб.)</label>
-                            <input type="text" id="amount" name="amount" value={amount} disabled />
-                        </div>
-                        {paymentStatus === 'PENDING' && (
-                            <button className='button' onClick={handlePayment}>Оплатить</button>
-
-                        )}
-                        {paymentStatus === 'REDIRECTED' && (
-                            <div>Вы будете перенаправлены на страницу оплаты...</div>
-                        )}
-                        {paymentStatus === 'COMPLETED' && (
-                            <div>Платеж успешно завершен</div>
-                        )}
-                        {paymentStatus === 'FAILED' && (
-                            <div>Произошла ошибка при оплате</div>
-                        )}
-                        <button className='button' onClick={handleLogout}>Выход</button>
+                        <iframe
+                            src="https://widgets.freekassa.ru?type=payment-window&lang=ru&theme=dark&default_amount=999&api_key=c2f3b4a9a2ce28058ab6e2602704b3c0&shopID=34376"
+                            width="300" height="400" frameBorder="0">
+                        </iframe>
+                        <button className='button' onClick={handleLogout}>Закрыть</button>
                     </div>
                 </div>
             </div>

@@ -46,9 +46,10 @@ html {
   color: #fff;
 }
 .menu-panel {
-  width: 400px;
+  max-width: 400px;
+  max-height: 400px;
   padding: 20px;
-  background-color: #9b9999;
+  background-color: rgb(94, 94, 94);
   border-radius: 10px;
   display: flex;
   flex-direction: column;

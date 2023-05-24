@@ -55,14 +55,19 @@ export const TemperatureSlider: FC<Props> = ({
                                     </h2>
                                     <ul className="flex flex-col gap-3.5 w-full sm:max-w-md m-auto">
                                         <button className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
+                                            {/* eslint-disable-next-line react/no-unescaped-entities */}
                                             "Explain
+                                            {/* eslint-disable-next-line react/no-unescaped-entities */}
                                             quantum computing in simple terms" →
                                         </button>
                                         <button className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
+                                            {/* eslint-disable-next-line react/no-unescaped-entities */}
                                             "Got
+                                            {/* eslint-disable-next-line react/no-unescaped-entities */}
                                             any creative ideas for a 10 year old’s birthday?" →
                                         </button>
                                         <button className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900">
+                                            {/* eslint-disable-next-line react/no-unescaped-entities */}
                                             "How do I make an HTTP request in Javascript?" →
                                         </button>
                                     </ul>

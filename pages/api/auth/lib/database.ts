@@ -1,16 +1,16 @@
 import { Sequelize } from 'sequelize';
 
+
 export const sequelize = new Sequelize(
-    process.env.DB_NAME || 'root',
-    process.env.DB_USERNAME || 'postgres',
-    process.env.DB_PASSWORD || 'root',
+    'hanska5n_gpt', // здесь имя вашей базы данных WordPress
+    'hanska5n_gpt', // здесь имя пользователя для подключения к вашей базе данных WordPress
+    'Yonsei3930204', // здесь пароль пользователя для подключения к вашей базе данных WordPress
     {
-        host: process.env.DB_HOST || 'localhost',
-        port: parseInt(process.env.DB_PORT || '5432', 10),
-        dialect: 'postgres',
+        host: 'localhost', // хост для подключения к БД
+        dialect: 'mysql', // задаем используемую базу данных - MySQL
         dialectOptions: {
-            ssl: process.env.NODE_ENV === 'production',
-        },
+            ssl: false,
+        }
     }
 );
 

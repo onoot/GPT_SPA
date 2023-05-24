@@ -81,8 +81,9 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
   }
 
 
-  const MAX_REQUESTS_PER_MONTH = 3;
+  const MAX_REQUESTS_PER_MONTH = 300;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   let requestCounter = { count: 0, lastTime: 0 };
   let totalRequestsCounter = 0;
 
@@ -315,7 +316,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
           const currentRequestCount = parseInt(localStorage.getItem('requestCount')!) + 1;
           localStorage.setItem('requestCount', currentRequestCount.toString());
         }},
-      [ apiKey, conversations, pluginKeys, selectedConversation, stopConversationRef, ], );
+      [apiKey, conversations, homeDispatch, pluginKeys, requestCounter, selectedConversation, stopConversationRef, totalRequestsCounter], );
 
   const scrollToBottom = useCallback(() => {
     if (autoScrollEnabled) {

@@ -1,16 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { User } from './models/User';
+import User from './models/User';
+import UserInterface from './models/User';
 import { jwtSecretKey } from './config';
-
-const SECRET_KEY = jwtSecretKey;
-const EXPIRATION_TIME = 24 * 60 * 60; // 1 день
 
 interface LoginData {
     email: string;
     password: string;
 }
+
+const SECRET_KEY = jwtSecretKey;
+const EXPIRATION_TIME = 24 * 60 * 60; // 1 день
 
 const generateToken = (userId: number): string => {
     const token = jwt.sign({ userId }, SECRET_KEY, {
@@ -23,30 +24,29 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const { email, password } = req.body as LoginData;;
+    const { email, password } = req.body as LoginData;
 
     try {
         // Ищем пользователя в базе данных по его email
-        const user = await User.findOne({ where: { email } });
+        const user: UserInterface | null = await User.findOne({ where: { email } });
 
         // Если пользователя нет, отправляем ответ с ошибкой
         if (!user) {
             return res.status(400).json({ message: 'Неправильный адрес электронной почты' });
         }
 
-        // Проверяем, соответствует ли переданный пароль
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        console.log(user.password)
-
         // Если пароль не соответствует, отправляем ответ с ошибкой
-        if (!isPasswordValid) {
+        if (password != user.password) {
             console.log(`User with email ${email} tried to log in with incorrect password: ${password}`);
             return res.status(400).json({ message: 'Неправильный пароль' });
         }
 
+        // Получаем id пользователя из базы данных
+        const userId: number = user.id ? user.id : 0;
+
         // Пароль и данные пользователя верны,
         // генерируем JWT-токен
-        const token = generateToken(user.id);
+        const token: string = generateToken(userId);
 
         // Отправляем токен в HttpOnly cookie
         const cookieOptions = {
